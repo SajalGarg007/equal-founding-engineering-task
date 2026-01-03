@@ -14,10 +14,10 @@
 	<description>Main Spring Boot application module</description>
 	
 	<dependencies>
-		<!-- Equal DB Module -->
+		<!-- Equal API Module (includes equal-db transitively) -->
 		<dependency>
 			<groupId>com.task</groupId>
-			<artifactId>equal-db</artifactId>
+			<artifactId>equal-api</artifactId>
 		</dependency>
 		
 		<!-- Spring Boot Web -->

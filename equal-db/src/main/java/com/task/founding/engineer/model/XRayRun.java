@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Root entity representing a complete X-Ray run (pipeline execution).
- * Contains all steps and their decision context.
- */
 @Entity
 @Table(name = "xray_runs", indexes = {
     @Index(name = "idx_pipeline_type", columnList = "pipeline_type"),

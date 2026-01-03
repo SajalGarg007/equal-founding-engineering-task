@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Represents a single step within an X-Ray run.
- * Captures decision context, inputs, outputs, and reasoning.
- */
 @Entity
 @Table(name = "xray_steps", indexes = {
     @Index(name = "idx_step_run_id", columnList = "run_id"),

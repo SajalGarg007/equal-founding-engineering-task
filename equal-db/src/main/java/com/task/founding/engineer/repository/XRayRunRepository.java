@@ -12,40 +12,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Repository for XRayRun entities.
- * Provides query methods for retrieving runs with various filters.
- */
 @Repository
 public interface XRayRunRepository extends JpaRepository<XRayRun, UUID> {
 
-    /**
-     * Find runs by pipeline type.
-     */
     List<XRayRun> findByPipelineType(String pipelineType);
 
-    /**
-     * Find runs by pipeline type and status.
-     */
     List<XRayRun> findByPipelineTypeAndStatus(String pipelineType, RunStatus status);
 
-    /**
-     * Find runs within a date range.
-     */
     List<XRayRun> findByStartedAtBetween(LocalDateTime start, LocalDateTime end);
 
-    /**
-     * Find runs by pipeline type within a date range.
-     */
     List<XRayRun> findByPipelineTypeAndStartedAtBetween(
             String pipelineType, 
             LocalDateTime start, 
             LocalDateTime end
     );
 
-    /**
-     * Find a run with all its steps and candidates loaded (eager fetch).
-     */
     @Query("SELECT DISTINCT r FROM XRayRun r " +
            "LEFT JOIN FETCH r.steps s " +
            "LEFT JOIN FETCH s.candidates " +

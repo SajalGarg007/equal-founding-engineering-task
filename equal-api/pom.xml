@@ -9,15 +9,27 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>equal-db</artifactId>
-	<name>equal-db</name>
-	<description>Database module containing models, repositories, enums, DTOs, services, and mappers</description>
+	<artifactId>equal-api</artifactId>
+	<name>equal-api</name>
+	<description>API module containing REST controllers and exception handlers</description>
 	
 	<dependencies>
-		<!-- Spring Data JPA -->
+		<!-- Equal DB Module -->
+		<dependency>
+			<groupId>com.task</groupId>
+			<artifactId>equal-db</artifactId>
+		</dependency>
+		
+		<!-- Spring Boot Web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+		
+		<!-- Spring Boot Validation -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		
 		<!-- Lombok -->
@@ -26,18 +38,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
-		<!-- PostgreSQL Driver -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-    </dependencies>
+	</dependencies>
 	
 </project>
 

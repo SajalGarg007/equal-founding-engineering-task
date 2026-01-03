@@ -10,10 +10,6 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
-/**
- * Represents a candidate evaluated within a step.
- * Tracks selection status, scores, and rejection reasons.
- */
 @Entity
 @Table(name = "xray_candidates", indexes = {
     @Index(name = "idx_candidate_step_id", columnList = "step_id"),
