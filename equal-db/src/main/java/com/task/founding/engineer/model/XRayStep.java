@@ -12,6 +12,7 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -80,7 +81,7 @@ public class XRayStep {
 
     @PrePersist
     protected void onCreate() {
-        if (startedAt == null) {
+        if (Objects.isNull(startedAt)) {
             startedAt = LocalDateTime.now();
         }
     }

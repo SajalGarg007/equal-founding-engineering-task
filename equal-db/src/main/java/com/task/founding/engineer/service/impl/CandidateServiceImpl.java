@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .step(step)
                 .data(request.getData())
                 .score(request.getScore())
-                .selected(request.getSelected() != null ? request.getSelected() : false)
+                .selected(Objects.nonNull(request.getSelected()) ? request.getSelected() : false)
                 .rejectionReason(request.getRejectionReason())
                 .metadata(request.getMetadata())
                 .build();
@@ -57,7 +58,7 @@ public class CandidateServiceImpl implements CandidateService {
                         .step(step)
                         .data(request.getData())
                         .score(request.getScore())
-                        .selected(request.getSelected() != null ? request.getSelected() : false)
+                        .selected(Objects.nonNull(request.getSelected()) ? request.getSelected() : false)
                         .rejectionReason(request.getRejectionReason())
                         .metadata(request.getMetadata())
                         .build())
@@ -73,7 +74,7 @@ public class CandidateServiceImpl implements CandidateService {
     public List<XRayCandidate> getCandidatesByStepId(
             @NotNull UUID stepId,
             @Nullable Boolean selected) {
-        if (selected != null) {
+        if (Objects.nonNull(selected)) {
             if (selected) {
                 return candidateRepository.findByStepIdAndSelectedTrue(stepId);
             } else {

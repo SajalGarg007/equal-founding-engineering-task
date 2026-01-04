@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -49,7 +50,7 @@ public class StepServiceImpl implements StepService {
         step = stepRepository.save(step);
 
         // Create candidates if provided
-        if (request.getCandidates() != null && !request.getCandidates().isEmpty()) {
+        if (Objects.nonNull(request.getCandidates()) && !request.getCandidates().isEmpty()) {
             candidateService.createCandidates(step.getStepId(), request.getCandidates());
         }
 
@@ -83,7 +84,7 @@ public class StepServiceImpl implements StepService {
 
         step.setCompletedAt(LocalDateTime.now());
         step.setOutput(output);
-        if (reasoning != null) {
+        if (Objects.nonNull(reasoning)) {
             step.setReasoning(reasoning);
         }
         stepRepository.save(step);

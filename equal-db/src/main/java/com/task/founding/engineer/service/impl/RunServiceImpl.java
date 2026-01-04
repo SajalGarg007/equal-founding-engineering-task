@@ -48,7 +48,7 @@ public class RunServiceImpl implements RunService {
             @Nullable RunStatus status) {
         if (Objects.nonNull(pipelineType) && Objects.nonNull(status)) {
             return runRepository.findByPipelineTypeAndStatus(pipelineType, status);
-        } else if (pipelineType != null) {
+        } else if (Objects.nonNull(pipelineType)) {
             return runRepository.findByPipelineType(pipelineType);
         } else {
             return runRepository.findAll();

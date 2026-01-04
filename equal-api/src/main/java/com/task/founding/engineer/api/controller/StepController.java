@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class StepController {
     public ResponseEntity<ApiResponse<List<StepResponseDTO>>> getStepsByType(
             @RequestParam(required = false) String stepType) {
         List<StepResponseDTO> steps;
-        if (stepType != null) {
+        if (Objects.nonNull(stepType)) {
             steps = stepService.getStepsByType(stepType).stream()
                     .map(stepConverter::toResponse)
                     .collect(Collectors.toList());
@@ -66,8 +67,8 @@ public class StepController {
     public ResponseEntity<ApiResponse<Void>> completeStep(
             @PathVariable UUID stepId,
             @RequestBody(required = false) Map<String, Object> body) {
-        Object output = body != null ? body.get("output") : null;
-        String reasoning = body != null && body.get("reasoning") != null 
+        Object output = Objects.nonNull(body) ? body.get("output") : null;
+        String reasoning = Objects.nonNull(body) && Objects.nonNull(body.get("reasoning"))
             ? body.get("reasoning").toString() 
             : null;
         stepService.completeStep(stepId, output, reasoning);

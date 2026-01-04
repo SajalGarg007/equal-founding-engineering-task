@@ -4,11 +4,13 @@ import com.task.founding.engineer.dto.response.CandidateResponseDTO;
 import com.task.founding.engineer.model.XRayCandidate;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class CandidateConverter {
 
     public CandidateResponseDTO toResponse(XRayCandidate candidate) {
-        if (candidate == null) {
+        if (Objects.isNull(candidate)) {
             return null;
         }
 

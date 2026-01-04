@@ -4,6 +4,7 @@ import com.task.founding.engineer.dto.response.StepResponseDTO;
 import com.task.founding.engineer.model.XRayStep;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,7 +17,7 @@ public class StepConverter {
     }
 
     public StepResponseDTO toResponse(XRayStep step) {
-        if (step == null) {
+        if (Objects.isNull(step)) {
             return null;
         }
 
@@ -33,7 +34,7 @@ public class StepConverter {
                 .output((java.util.Map<String, Object>) step.getOutput())
                 .reasoning(step.getReasoning())
                 .metadata((java.util.Map<String, Object>) step.getMetadata())
-                .candidates(step.getCandidates() != null
+                .candidates(Objects.nonNull(step.getCandidates())
                     ? step.getCandidates().stream()
                         .map(candidateConverter::toResponse)
                         .collect(Collectors.toList())
