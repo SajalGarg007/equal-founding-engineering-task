@@ -8,6 +8,8 @@ import com.task.founding.engineer.repository.XRayRunRepository;
 import com.task.founding.engineer.repository.XRayStepRepository;
 import com.task.founding.engineer.service.CandidateService;
 import com.task.founding.engineer.service.StepService;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,9 @@ public class StepServiceImpl implements StepService {
 
     @Override
     @Transactional
-    public UUID createStep(UUID runId, CreateStepRequestDTO request) {
+    public UUID createStep(
+            @NotNull UUID runId,
+            @NotNull CreateStepRequestDTO request) {
         XRayRun run = runRepository.findById(runId)
                 .orElseThrow(() -> new RuntimeException("Run not found with id: " + runId));
 
@@ -53,27 +57,27 @@ public class StepServiceImpl implements StepService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public XRayStep getStepById(UUID stepId) {
+    public XRayStep getStepById(@NotNull UUID stepId) {
         return stepRepository.findById(stepId)
                 .orElseThrow(() -> new RuntimeException("Step not found with id: " + stepId));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<XRayStep> getStepsByRunId(UUID runId) {
+    public List<XRayStep> getStepsByRunId(@NotNull UUID runId) {
         return stepRepository.findByRunIdOrderByOrderAsc(runId);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<XRayStep> getStepsByType(String stepType) {
+    public List<XRayStep> getStepsByType(@NotNull String stepType) {
         return stepRepository.findByStepType(stepType);
     }
 
     @Override
     @Transactional
-    public void completeStep(UUID stepId, Object output, String reasoning) {
+    public void completeStep(
+            @NotNull UUID stepId,
+            @NotNull Object output,
+            @Nullable String reasoning) {
         XRayStep step = stepRepository.findById(stepId)
                 .orElseThrow(() -> new RuntimeException("Step not found with id: " + stepId));
 

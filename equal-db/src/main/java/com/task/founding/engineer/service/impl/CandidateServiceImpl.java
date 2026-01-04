@@ -6,6 +6,8 @@ import com.task.founding.engineer.model.XRayStep;
 import com.task.founding.engineer.repository.XRayCandidateRepository;
 import com.task.founding.engineer.repository.XRayStepRepository;
 import com.task.founding.engineer.service.CandidateService;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,9 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     @Transactional
-    public UUID createCandidate(UUID stepId, CreateCandidateRequestDTO request) {
+    public UUID createCandidate(
+            @NotNull UUID stepId,
+            @NotNull CreateCandidateRequestDTO request) {
         XRayStep step = stepRepository.findById(stepId)
                 .orElseThrow(() -> new RuntimeException("Step not found with id: " + stepId));
 
@@ -42,7 +46,9 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     @Transactional
-    public List<UUID> createCandidates(UUID stepId, List<CreateCandidateRequestDTO> requests) {
+    public List<UUID> createCandidates(
+            @NotNull UUID stepId,
+            @NotNull List<CreateCandidateRequestDTO> requests) {
         XRayStep step = stepRepository.findById(stepId)
                 .orElseThrow(() -> new RuntimeException("Step not found with id: " + stepId));
 
@@ -64,8 +70,9 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<XRayCandidate> getCandidatesByStepId(UUID stepId, Boolean selected) {
+    public List<XRayCandidate> getCandidatesByStepId(
+            @NotNull UUID stepId,
+            @Nullable Boolean selected) {
         if (selected != null) {
             if (selected) {
                 return candidateRepository.findByStepIdAndSelectedTrue(stepId);
@@ -78,14 +85,12 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<XRayCandidate> getSelectedCandidates(UUID stepId) {
+    public List<XRayCandidate> getSelectedCandidates(@NotNull UUID stepId) {
         return candidateRepository.findByStepIdAndSelectedTrue(stepId);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<XRayCandidate> getRejectedCandidates(UUID stepId) {
+    public List<XRayCandidate> getRejectedCandidates(@NotNull UUID stepId) {
         return candidateRepository.findByStepIdAndSelectedFalse(stepId);
     }
 }

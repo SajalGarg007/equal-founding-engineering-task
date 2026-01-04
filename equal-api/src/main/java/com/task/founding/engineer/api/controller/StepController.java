@@ -57,7 +57,7 @@ public class StepController {
                     .map(stepConverter::toResponse)
                     .collect(Collectors.toList());
         } else {
-            steps = List.of(); // Return empty list if no filter
+            steps = List.of();
         }
         return ResponseEntity.ok(ApiResponse.success(steps));
     }

@@ -2,19 +2,24 @@ package com.task.founding.engineer.service;
 
 import com.task.founding.engineer.dto.request.CreateStepRequestDTO;
 import com.task.founding.engineer.model.XRayStep;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface StepService {
 
-    UUID createStep(UUID runId, CreateStepRequestDTO request);
+    UUID createStep(@NotNull UUID runId, @NotNull CreateStepRequestDTO request);
 
-    XRayStep getStepById(UUID stepId);
+    XRayStep getStepById(@NotNull UUID stepId);
 
-    List<XRayStep> getStepsByRunId(UUID runId);
+    List<XRayStep> getStepsByRunId(@NotNull UUID runId);
 
-    List<XRayStep> getStepsByType(String stepType);
+    List<XRayStep> getStepsByType(@NotNull String stepType);
 
-    void completeStep(UUID stepId, Object output, String reasoning);
+    void completeStep(
+            @NotNull UUID stepId,
+            @NotNull Object output,
+            @Nullable String reasoning);
 }

@@ -5,12 +5,15 @@ import com.task.founding.engineer.enums.RunStatus;
 import com.task.founding.engineer.model.XRayRun;
 import com.task.founding.engineer.repository.XRayRunRepository;
 import com.task.founding.engineer.service.RunService;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -21,7 +24,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     @Transactional
-    public UUID createRun(CreateRunRequestDTO request) {
+    public UUID createRun(@NotNull CreateRunRequestDTO request) {
         XRayRun run = XRayRun.builder()
                 .pipelineType(request.getPipelineType())
                 .pipelineId(request.getPipelineId())
@@ -34,16 +37,16 @@ public class RunServiceImpl implements RunService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public XRayRun getRunById(UUID runId) {
+    public XRayRun getRunById(@NotNull UUID runId) {
         return runRepository.findByIdWithStepsAndCandidates(runId)
                 .orElseThrow(() -> new RuntimeException("Run not found with id: " + runId));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<XRayRun> getAllRuns(String pipelineType, RunStatus status) {
-        if (pipelineType != null && status != null) {
+    public List<XRayRun> getAllRuns(
+            @Nullable String pipelineType,
+            @Nullable RunStatus status) {
+        if (Objects.nonNull(pipelineType) && Objects.nonNull(status)) {
             return runRepository.findByPipelineTypeAndStatus(pipelineType, status);
         } else if (pipelineType != null) {
             return runRepository.findByPipelineType(pipelineType);
@@ -54,7 +57,9 @@ public class RunServiceImpl implements RunService {
 
     @Override
     @Transactional
-    public void completeRun(UUID runId, Object output) {
+    public void completeRun(
+            @NotNull UUID runId,
+            @NotNull Object output) {
         XRayRun run = runRepository.findById(runId)
                 .orElseThrow(() -> new RuntimeException("Run not found with id: " + runId));
 
@@ -66,7 +71,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     @Transactional
-    public void failRun(UUID runId) {
+    public void failRun(@NotNull UUID runId) {
         XRayRun run = runRepository.findById(runId)
                 .orElseThrow(() -> new RuntimeException("Run not found with id: " + runId));
 

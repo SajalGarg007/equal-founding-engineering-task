@@ -1,4 +1,4 @@
-package com.task.founding.engineer.api.controller;
+package com.task.founding.engineer.api.controller.exception.handler;
 
 import com.task.founding.engineer.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
