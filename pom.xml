@@ -23,7 +23,6 @@
 	<modules>
 		<module>equal-db</module>
 		<module>equal-api</module>
-		<module>equal-sdk</module>
 		<module>founding-engineer-app</module>
 	</modules>
 	
@@ -37,11 +36,6 @@
 		<dependency>
 			<groupId>com.task</groupId>
 			<artifactId>equal-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.task</groupId>
-			<artifactId>equal-sdk</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		</dependencies>
