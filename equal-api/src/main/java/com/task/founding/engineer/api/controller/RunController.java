@@ -9,10 +9,12 @@ import com.task.founding.engineer.enums.RunStatus;
 import com.task.founding.engineer.service.RunService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,8 +43,11 @@ public class RunController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<RunResponseDTO>>> getAllRuns(
             @RequestParam(required = false) String pipelineType,
-            @RequestParam(required = false) RunStatus status) {
-        List<RunResponseDTO> runs = runService.getAllRuns(pipelineType, status).stream()
+            @RequestParam(required = false) RunStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        List<RunResponseDTO> runs = runService.getAllRuns(
+                        pipelineType, status, startDate, endDate).stream()
                 .map(runConverter::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(ApiResponse.success(runs));

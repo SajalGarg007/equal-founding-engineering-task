@@ -45,7 +45,21 @@ public class RunServiceImpl implements RunService {
     @Override
     public List<XRayRun> getAllRuns(
             @Nullable String pipelineType,
-            @Nullable RunStatus status) {
+            @Nullable RunStatus status,
+            @Nullable LocalDateTime startDate,
+            @Nullable LocalDateTime endDate) {
+
+        if (Objects.nonNull(startDate) || Objects.nonNull(endDate)) {
+            LocalDateTime start = Objects.nonNull(startDate) ? startDate : LocalDateTime.MIN;
+            LocalDateTime end = Objects.nonNull(endDate) ? endDate : LocalDateTime.MAX;
+
+            if (Objects.nonNull(pipelineType)) {
+                return runRepository.findByPipelineTypeAndStartedAtBetween(pipelineType, start, end);
+            } else {
+                return runRepository.findByStartedAtBetween(start, end);
+            }
+        }
+
         if (Objects.nonNull(pipelineType) && Objects.nonNull(status)) {
             return runRepository.findByPipelineTypeAndStatus(pipelineType, status);
         } else if (Objects.nonNull(pipelineType)) {

@@ -6,6 +6,7 @@ import com.task.founding.engineer.model.XRayRun;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +18,9 @@ public interface RunService {
 
     List<XRayRun> getAllRuns(
             @Nullable String pipelineType,
-            @Nullable RunStatus status);
+            @Nullable RunStatus status,
+            @Nullable LocalDateTime startDate,
+            @Nullable LocalDateTime endDate);
 
     void completeRun(
             @NotNull UUID runId,

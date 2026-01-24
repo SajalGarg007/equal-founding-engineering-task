@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface XRayStepRepository extends JpaRepository<XRayStep, UUID> {
+public interface XRayStepRepository
+        extends JpaRepository<XRayStep, UUID>
+{
 
     List<XRayStep> findByRunIdOrderByOrderAsc(UUID runId);
 
@@ -20,12 +23,13 @@ public interface XRayStepRepository extends JpaRepository<XRayStep, UUID> {
 
     List<XRayStep> findByStepTypeAndStepName(String stepType, String stepName);
 
-    @Query("SELECT s FROM XRayStep s " +
-           "WHERE s.stepType = :stepType " +
-           "AND (SELECT COUNT(c) FROM XRayCandidate c WHERE c.stepId = s.stepId) > 0 " +
-           "AND (SELECT CAST(COUNT(c) AS double) FROM XRayCandidate c " +
-           "     WHERE c.stepId = s.stepId AND c.selected = false) / " +
-           "    (SELECT CAST(COUNT(c) AS double) FROM XRayCandidate c WHERE c.stepId = s.stepId) > :rejectionRate")
+    @Query(value = "SELECT s.* FROM xray_steps s " +
+           "WHERE s.step_type = :stepType " +
+           "AND EXISTS (SELECT 1 FROM xray_candidates c WHERE c.step_id = s.step_id) " +
+           "AND (SELECT COUNT(c.candidate_id)::numeric FROM xray_candidates c " +
+           "     WHERE c.step_id = s.step_id AND c.selected = false) / " +
+           "    NULLIF((SELECT COUNT(c.candidate_id) FROM xray_candidates c WHERE c.step_id = s.step_id), 0) > :rejectionRate",
+           nativeQuery = true)
     List<XRayStep> findStepsWithHighRejectionRate(
             @Param("stepType") String stepType,
             @Param("rejectionRate") double rejectionRate
@@ -35,5 +39,16 @@ public interface XRayStepRepository extends JpaRepository<XRayStep, UUID> {
            "JOIN FETCH s.run r " +
            "WHERE s.stepType = :stepType")
     List<XRayStep> findByStepTypeWithRun(@Param("stepType") String stepType);
+
+    @Query("SELECT s FROM XRayStep s " +
+            "JOIN s.run r " +
+            "WHERE s.stepType = 'filter' " +
+            "AND (:pipelineType IS NULL OR r.pipelineType = :pipelineType) " +
+            "AND (:startDate IS NULL OR s.startedAt >= :startDate) " +
+            "AND (:endDate IS NULL OR s.startedAt <= :endDate)")
+    List<XRayStep> findFilteringSteps(
+            @Param("pipelineType") String pipelineType,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 }
 
